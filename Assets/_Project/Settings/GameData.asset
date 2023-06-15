@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f93fe49e3c1f483aba0dcf4f3ae4c4f5, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  rotationMouseSens: 0.1
-  rotationSmoothness: 70
-  movementMouseSens: 0.5
-  movementSmoothness: 125
+  orbitalRotationMouseSens: 0.1
+  orbitalRotationSmoothness: 100
+  orbitalMovementMouseSens: 0.3
+  orbitalMovementSmoothness: 50
   zoomSmoothness: 150
   zoomSteps: 20
   minZoomSize: 10
+  freeCamRotationMouseSens: 125
+  freeCamMoveSpeed: 25

@@ -7,24 +7,29 @@ namespace gishadev.Shooter.Core
     {
         [Header("Orbital Camera Settings")]
         [Header("Movement/Rotation")]
-        [SerializeField] private float rotationMouseSens = 0.25f;
+        [SerializeField] private float orbitalRotationMouseSens = 0.25f;
 
-        [SerializeField] private float rotationSmoothness = 250f;
-        [SerializeField] private float movementMouseSens = 1f;
-        [SerializeField] private float movementSmoothness = 125f;
+        [SerializeField] private float orbitalRotationSmoothness = 250f;
+        [SerializeField] private float orbitalMovementMouseSens = 1f;
+        [SerializeField] private float orbitalMovementSmoothness = 125f;
 
         [Header("Zoom")] 
         [SerializeField] private float zoomSmoothness = 255f;
         [SerializeField] private float zoomSteps = 10f;
         [SerializeField] private float minZoomSize = 3.5f;
-
-        public float RotationMouseSens => rotationMouseSens;
-        public float MovementMouseSens => movementMouseSens;
-        public float MovementSmoothness => movementSmoothness;
+        [Header("Free Camera Settings")]
+        [SerializeField] private float freeCamRotationMouseSens = 0.25f;
+        [SerializeField] private float freeCamMoveSpeed = 25f;
+        
+        public float OrbitalRotationMouseSens => orbitalRotationMouseSens;
+        public float OrbitalMovementMouseSens => orbitalMovementMouseSens;
+        public float OrbitalMovementSmoothness => orbitalMovementSmoothness;
         public float ZoomSmoothness => zoomSmoothness;
         public float ZoomSteps => zoomSteps;
         public float MinZoomSize => minZoomSize;
-        public float RotationSmoothness => rotationSmoothness;
+        public float OrbitalRotationSmoothness => orbitalRotationSmoothness;
+        public float FreeCamRotationMouseSens => freeCamRotationMouseSens;
 
+        public float FreeCamMoveSpeed => freeCamMoveSpeed;
     }
 }

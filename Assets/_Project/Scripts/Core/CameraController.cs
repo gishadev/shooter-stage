@@ -6,7 +6,8 @@ namespace gishadev.Shooter.Core
     public class CameraController : MonoBehaviour
     {
         [SerializeField] private GameDataSO gameDataSO;
-        
+        [SerializeField] private Transform offsetRig;
+
         private CameraMode _currentCameraMode;
         private ICameraControlModule _currentControlModule;
 
@@ -36,10 +37,10 @@ namespace gishadev.Shooter.Core
             switch (_currentCameraMode)
             {
                 case CameraMode.Orbital:
-                    _currentControlModule = new OrbitalControlModule(transform, gameDataSO);
+                    _currentControlModule = new OrbitalControlModule(transform, offsetRig, gameDataSO);
                     break;
                 case CameraMode.FreeCam:
-                    _currentControlModule = new OrbitalControlModule(transform, gameDataSO);
+                    _currentControlModule = new FreeCamControlModule(transform, offsetRig, gameDataSO);
                     break;
             }
 
@@ -52,5 +53,11 @@ namespace gishadev.Shooter.Core
             _currentControlModule.OnStart();
             CameraModeChanged?.Invoke(cameraMode);
         }
+
+        [ContextMenu("Change Camera Mode to Orbital")]
+        public void ChangeToOrbital() => ChangeCameraMode(CameraMode.Orbital);
+
+        [ContextMenu("Change Camera Mode to FreeCam")]
+        public void ChangeToFree() => ChangeCameraMode(CameraMode.FreeCam);
     }
 }

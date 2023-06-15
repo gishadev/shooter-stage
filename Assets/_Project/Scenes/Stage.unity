@@ -1353,6 +1353,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameDataSO: {fileID: 11400000, guid: ecb2176f5aa4be94eb6c9f658f656aec, type: 2}
+  offsetRig: {fileID: 1387668277}
 --- !u!1001 &1104139033965376807
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -4,8 +4,9 @@ namespace gishadev.Shooter.Core
 {
     public class OrbitalControlModule : ICameraControlModule
     {
-        private readonly Transform _transform;
+        private readonly Transform _rig;
         private readonly GameDataSO _gameDataSo;
+        private readonly Transform _offsetRig;
 
         private float _yDeltaRotation;
         private float _zoomValue;
@@ -17,10 +18,11 @@ namespace gishadev.Shooter.Core
         private float _maxZoomSize, _zoomStep;
         private Vector3 _topBorder, _bottomBorder;
 
-        public OrbitalControlModule(Transform transform, GameDataSO gameDataSO)
+        public OrbitalControlModule(Transform rig, Transform offsetRig, GameDataSO gameDataSO)
         {
-            _transform = transform;
+            _rig = rig;
             _gameDataSo = gameDataSO;
+            _offsetRig = offsetRig;
         }
 
         public void Tick()
@@ -32,10 +34,10 @@ namespace gishadev.Shooter.Core
 
         public void OnStart()
         {
-            _yDeltaRotation = _transform.rotation.eulerAngles.y;
+            _yDeltaRotation = _rig.rotation.eulerAngles.y;
 
-            _newPos = _transform.position;
-            _newRotation = _transform.rotation;
+            _newPos = _rig.position;
+            _newRotation = _rig.rotation;
 
             _maxZoomSize = Camera.main.transform.position.y;
             _zoomValue = _maxZoomSize;
@@ -71,12 +73,12 @@ namespace gishadev.Shooter.Core
                 {
                     _dragCurrentPos = ray.GetPoint(entry);
 
-                    _newPos += (_dragStartPos - _dragCurrentPos) * _gameDataSo.MovementMouseSens;
+                    _newPos += (_dragStartPos - _dragCurrentPos) * _gameDataSo.OrbitalMovementMouseSens;
                     _newPos.x = Mathf.Clamp(_newPos.x, _bottomBorder.x, _topBorder.x);
                     _newPos.z = Mathf.Clamp(_newPos.z, _bottomBorder.z, _topBorder.z);
 
-                    _transform.position = Vector3.Lerp(_transform.position, _newPos,
-                        Time.deltaTime * _gameDataSo.MovementSmoothness);
+                    _rig.position = Vector3.Lerp(_rig.position, _newPos,
+                        Time.deltaTime * _gameDataSo.OrbitalMovementSmoothness);
                 }
             }
         }
@@ -92,12 +94,12 @@ namespace gishadev.Shooter.Core
                 float diff = _rotateStartPos.x - _rotateCurrentPos.x;
                 _rotateStartPos = _rotateCurrentPos;
 
-                _yDeltaRotation = diff * _gameDataSo.RotationMouseSens;
+                _yDeltaRotation = diff * _gameDataSo.OrbitalRotationMouseSens;
                 _newRotation *= Quaternion.Euler(-Vector3.up * _yDeltaRotation);
             }
 
-            _transform.rotation = Quaternion.Slerp(_transform.rotation, _newRotation,
-                Time.deltaTime * _gameDataSo.RotationSmoothness);
+            _rig.rotation = Quaternion.Slerp(_rig.rotation, _newRotation,
+                Time.deltaTime * _gameDataSo.OrbitalRotationSmoothness);
         }
 
         private void HandleZoomChange()
