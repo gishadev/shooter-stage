@@ -40,8 +40,8 @@ namespace gishadev.Shooter.Core
             _newPos = _rig.position;
             _newRotation = _rig.rotation;
 
-            _maxZoomSize = Camera.main.transform.position.y;
-            _zoomValue = _maxZoomSize;
+            _maxZoomSize = _gameDataSo.MaxZoomSize;
+            _zoomValue = Camera.main.transform.position.y;
             _zoomStep = (_maxZoomSize - _gameDataSo.MinZoomSize) / _gameDataSo.ZoomSteps;
 
             _topBorder = new Vector3(50f, 0f, 50f);

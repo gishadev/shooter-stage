@@ -14,9 +14,10 @@ namespace gishadev.Shooter.Core
         [SerializeField] private float orbitalMovementSmoothness = 125f;
 
         [Header("Zoom")] 
-        [SerializeField] private float zoomSmoothness = 255f;
-        [SerializeField] private float zoomSteps = 10f;
-        [SerializeField] private float minZoomSize = 3.5f;
+        [SerializeField] private float zoomSmoothness = 10f;
+        [SerializeField] private float zoomSteps = 5F;
+        [SerializeField] private float minZoomSize = 12f;
+        [SerializeField] private float maxZoomSize = 20f;
         [Header("Free Camera Settings")]
         [SerializeField] private float freeCamRotationMouseSens = 0.25f;
         [SerializeField] private float freeCamMoveSpeed = 25f;
@@ -31,5 +32,7 @@ namespace gishadev.Shooter.Core
         public float FreeCamRotationMouseSens => freeCamRotationMouseSens;
 
         public float FreeCamMoveSpeed => freeCamMoveSpeed;
+
+        public float MaxZoomSize => maxZoomSize;
     }
 }

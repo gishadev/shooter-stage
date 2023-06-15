@@ -16,8 +16,9 @@ MonoBehaviour:
   orbitalRotationSmoothness: 100
   orbitalMovementMouseSens: 0.3
   orbitalMovementSmoothness: 150
-  zoomSmoothness: 10
-  zoomSteps: 5
+  zoomSmoothness: 100
+  zoomSteps: 10
   minZoomSize: 12
+  maxZoomSize: 20
   freeCamRotationMouseSens: 125
   freeCamMoveSpeed: 25
