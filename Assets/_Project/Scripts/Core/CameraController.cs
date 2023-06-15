@@ -21,6 +21,9 @@ namespace gishadev.Shooter.Core
 
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.G))
+                ChangeNext();
+
             _currentControlModule.Tick();
         }
 
@@ -56,8 +59,8 @@ namespace gishadev.Shooter.Core
                 return;
             }
 
-            LoadTransforms(transformsToLoad);
             _currentControlModule.OnStart();
+            LoadTransforms(transformsToLoad);
             CameraModeChanged?.Invoke(cameraMode);
         }
 
@@ -66,6 +69,16 @@ namespace gishadev.Shooter.Core
 
         [ContextMenu("Change Camera Mode to FreeCam")]
         public void ChangeToFree() => ChangeCameraMode(CameraMode.FreeCam);
+
+        public void ChangeNext()
+        {
+            var index = (int) _currentCameraMode;
+            index++;
+            if (index > 1)
+                index = 0;
+
+            ChangeCameraMode((CameraMode) index);
+        }
 
         private void SaveTransforms()
         {

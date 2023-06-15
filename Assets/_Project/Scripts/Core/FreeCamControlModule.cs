@@ -28,6 +28,8 @@ namespace gishadev.Shooter.Core
         {
             Cursor.lockState = CursorLockMode.Locked;
 
+            _xRot = Camera.main.transform.localRotation.eulerAngles.x;
+            _transform.localPosition = Camera.main.transform.localPosition;
             _offsetRig.localPosition = Vector3.zero;
             Camera.main.transform.localPosition = Vector3.zero;
         }
