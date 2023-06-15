@@ -11,6 +11,7 @@ namespace gishadev.Shooter.Core
         private CameraMode _currentCameraMode;
         private ICameraControlModule _currentControlModule;
 
+        private SavedTransforms _savedTransforms;
         public event Action<CameraMode> CameraModeChanged;
 
         private void Start()
@@ -31,8 +32,13 @@ namespace gishadev.Shooter.Core
         public void ChangeCameraMode(CameraMode cameraMode)
         {
             _currentCameraMode = cameraMode;
+            SavedTransforms transformsToLoad = _savedTransforms;
+
             if (_currentControlModule != null)
+            {
+                SaveTransforms();
                 _currentControlModule.OnStop();
+            }
 
             switch (_currentCameraMode)
             {
@@ -50,6 +56,7 @@ namespace gishadev.Shooter.Core
                 return;
             }
 
+            LoadTransforms(transformsToLoad);
             _currentControlModule.OnStart();
             CameraModeChanged?.Invoke(cameraMode);
         }
@@ -59,5 +66,40 @@ namespace gishadev.Shooter.Core
 
         [ContextMenu("Change Camera Mode to FreeCam")]
         public void ChangeToFree() => ChangeCameraMode(CameraMode.FreeCam);
+
+        private void SaveTransforms()
+        {
+            var transforms = transform.GetComponentsInChildren<Transform>();
+            _savedTransforms = new SavedTransforms
+            {
+                previousSavedPositions = new Vector3[transforms.Length],
+                previousSavedRotations = new Quaternion[transforms.Length]
+            };
+
+            for (var i = 0; i < transforms.Length; i++)
+            {
+                _savedTransforms.previousSavedPositions[i] = transforms[i].position;
+                _savedTransforms.previousSavedRotations[i] = transforms[i].rotation;
+            }
+        }
+
+        private void LoadTransforms(SavedTransforms allTransforms)
+        {
+            if (allTransforms.previousSavedPositions == null || allTransforms.previousSavedRotations == null)
+                return;
+            var sceneTransforms = transform.GetComponentsInChildren<Transform>();
+
+            for (var i = 0; i < sceneTransforms.Length; i++)
+            {
+                sceneTransforms[i].position = allTransforms.previousSavedPositions[i];
+                sceneTransforms[i].rotation = allTransforms.previousSavedRotations[i];
+            }
+        }
+    }
+
+    public struct SavedTransforms
+    {
+        public Vector3[] previousSavedPositions;
+        public Quaternion[] previousSavedRotations;
     }
 }

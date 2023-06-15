@@ -34,6 +34,7 @@ namespace gishadev.Shooter.Core
 
         public void OnStart()
         {
+            Cursor.lockState = CursorLockMode.None;
             _yDeltaRotation = _rig.rotation.eulerAngles.y;
 
             _newPos = _rig.position;
