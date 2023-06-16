@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using gishadev.Shooter.Core;
+using UnityEngine;
 
-namespace gishadev.Shooter.Core
+namespace gishadev.Shooter.Camera
 {
     public class FreeCamControlModule : ICameraControlModule
     {
@@ -12,7 +13,7 @@ namespace gishadev.Shooter.Core
 
         private float _xRot;
 
-        private readonly Camera _cam;
+        private readonly UnityEngine.Camera _cam;
 
         public FreeCamControlModule(Transform transform, Transform offsetRig, GameDataSO gameDataSO)
         {
@@ -20,7 +21,7 @@ namespace gishadev.Shooter.Core
             _offsetRig = offsetRig;
             _gameDataSo = gameDataSO;
 
-            _cam = Camera.main;
+            _cam = UnityEngine.Camera.main;
         }
 
         public void Tick()

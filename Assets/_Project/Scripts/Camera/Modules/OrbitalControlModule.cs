@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using gishadev.Shooter.Core;
+using UnityEngine;
 
-namespace gishadev.Shooter.Core
+namespace gishadev.Shooter.Camera
 {
     public class OrbitalControlModule : ICameraControlModule
     {
@@ -17,7 +18,7 @@ namespace gishadev.Shooter.Core
         private Vector3 _rotateStartPos, _rotateCurrentPos;
         private readonly float _zoomStep;
 
-        private readonly Camera _cam;
+        private readonly UnityEngine.Camera _cam;
 
         public OrbitalControlModule(Transform rig, Transform offsetRig, GameDataSO gameDataSO)
         {
@@ -25,7 +26,7 @@ namespace gishadev.Shooter.Core
             _gameDataSo = gameDataSO;
             _offsetRig = offsetRig;
 
-            _cam = Camera.main;
+            _cam = UnityEngine.Camera.main;
 
             _zoomStep = (_gameDataSo.MaxZoomSize - _gameDataSo.MinZoomSize) / _gameDataSo.ZoomSteps;
         }

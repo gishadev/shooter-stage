@@ -1,4 +1,4 @@
-﻿namespace gishadev.Shooter.Core
+﻿namespace gishadev.Shooter.Camera
 {
     public enum CameraMode
     {
