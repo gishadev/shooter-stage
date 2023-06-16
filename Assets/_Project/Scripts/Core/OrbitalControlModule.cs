@@ -56,22 +56,15 @@ namespace gishadev.Shooter.Core
 
         private void HandleMovement()
         {
+            var plane = new Plane(Vector3.up, Vector3.zero);
+            var ray = _cam.ScreenPointToRay(Input.mousePosition);
+
             if (Input.GetMouseButtonDown(1))
-            {
-                Plane plane = new Plane(Vector3.up, Vector3.zero);
-
-                Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
-                float entry;
-
-                if (plane.Raycast(ray, out entry))
+                if (plane.Raycast(ray, out var entry))
                     _dragStartPos = ray.GetPoint(entry);
-            }
 
             if (Input.GetMouseButton(1))
             {
-                var plane = new Plane(Vector3.up, Vector3.zero);
-                var ray = _cam.ScreenPointToRay(Input.mousePosition);
-
                 if (plane.Raycast(ray, out var entry))
                 {
                     _dragCurrentPos = ray.GetPoint(entry);
