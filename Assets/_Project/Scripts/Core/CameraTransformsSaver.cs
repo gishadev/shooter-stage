@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 namespace gishadev.Shooter.Core
 {
@@ -16,31 +17,34 @@ namespace gishadev.Shooter.Core
 
         public void SaveTransforms()
         {
-            var transforms = _cameraRig.GetComponentsInChildren<Transform>();
+            var sceneTransforms = _cameraRig.GetComponentsInChildren<Transform>();
             _savedTransforms = new SavedTransforms
             {
-                previousSavedPositions = new Vector3[transforms.Length],
-                previousSavedRotations = new Quaternion[transforms.Length]
+                previousSavedPositions = new Vector3[sceneTransforms.Length],
+                previousSavedRotations = new Quaternion[sceneTransforms.Length]
             };
-
-            for (var i = 0; i < transforms.Length; i++)
-            {
-                SavedTransforms.previousSavedPositions[i] = transforms[i].position;
-                SavedTransforms.previousSavedRotations[i] = transforms[i].rotation;
-            }
-        }
-
-        public void LoadTransforms(SavedTransforms allTransforms)
-        {
-            if (allTransforms.previousSavedPositions == null || allTransforms.previousSavedRotations == null)
-                return;
-            var sceneTransforms = _cameraRig.GetComponentsInChildren<Transform>();
 
             for (var i = 0; i < sceneTransforms.Length; i++)
             {
-                sceneTransforms[i].position = allTransforms.previousSavedPositions[i];
-                sceneTransforms[i].rotation = allTransforms.previousSavedRotations[i];
+                SavedTransforms.previousSavedPositions[i] = sceneTransforms[i].position;
+                SavedTransforms.previousSavedRotations[i] = sceneTransforms[i].rotation;
             }
+        }
+
+        public Sequence LoadTransforms(SavedTransforms allTransforms)
+        {
+            if (allTransforms.previousSavedPositions == null || allTransforms.previousSavedRotations == null)
+                return DOTween.Sequence();
+            
+            var seq = DOTween.Sequence();
+            var sceneTransforms = _cameraRig.GetComponentsInChildren<Transform>();
+            for (var i = 0; i < sceneTransforms.Length; i++)
+            {
+                seq.Join(sceneTransforms[i].DOMove(allTransforms.previousSavedPositions[i], 0.2f));
+                seq.Join(sceneTransforms[i].DORotateQuaternion(allTransforms.previousSavedRotations[i], 0.2f));
+            }
+
+            return seq;
         }
     }
 

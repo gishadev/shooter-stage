@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 
 namespace gishadev.Shooter.Core
@@ -8,11 +9,18 @@ namespace gishadev.Shooter.Core
         [SerializeField] private GameDataSO gameDataSO;
         [SerializeField] private Transform offsetRig;
 
-        private CameraMode _currentCameraMode;
         private ICameraControlModule _currentControlModule;
-        private CameraTransformsSaver _cameraTransformsSaver;
+        private ICameraControlModule _orbitalControlModule, _freeCamControlModule;
 
+        private CameraMode _currentCameraMode;
+        private CameraTransformsSaver _cameraTransformsSaver;
         public event Action<CameraMode> CameraModeChanged;
+
+        private void Awake()
+        {
+            _orbitalControlModule = new OrbitalControlModule(transform, offsetRig, gameDataSO);
+            _freeCamControlModule = new FreeCamControlModule(transform, offsetRig, gameDataSO);
+        }
 
         private void Start()
         {
@@ -33,36 +41,37 @@ namespace gishadev.Shooter.Core
             _currentControlModule.OnStop();
         }
 
-        public void ChangeCameraMode(CameraMode cameraMode)
+        private void ChangeCameraMode(CameraMode cameraMode)
         {
             _currentCameraMode = cameraMode;
-            var transformsToLoad = _cameraTransformsSaver.SavedTransforms;
 
-            if (_currentControlModule != null)
-            {
-                _cameraTransformsSaver.SaveTransforms();
-                _currentControlModule.OnStop();
-            }
+            var currentTransformsToLoad = _cameraTransformsSaver.SavedTransforms;
+            _currentControlModule?.OnStop();
+            _cameraTransformsSaver.SaveTransforms();
 
             switch (_currentCameraMode)
             {
                 case CameraMode.Orbital:
-                    _currentControlModule = new OrbitalControlModule(transform, offsetRig, gameDataSO);
+                    _currentControlModule = _orbitalControlModule;
                     break;
                 case CameraMode.FreeCam:
-                    _currentControlModule = new FreeCamControlModule(transform, offsetRig, gameDataSO);
+                    _currentControlModule = _freeCamControlModule;
                     break;
+                default:
+                    Debug.LogError("Current control module was not setup!");
+                    return;
             }
 
-            if (_currentControlModule == null)
+            // Using DoTween sequence for creating smooth transitional animations. 
+            var seq = _cameraTransformsSaver.LoadTransforms(currentTransformsToLoad);
+            seq.OnComplete(() =>
             {
-                Debug.LogError("Current control module is null!");
-                return;
-            }
+                _currentControlModule.OnStart();
+                if (!_currentControlModule.IsInitialized)
+                    _currentControlModule.Init();
 
-            _currentControlModule.OnStart();
-            _cameraTransformsSaver.LoadTransforms(transformsToLoad);
-            CameraModeChanged?.Invoke(cameraMode);
+                CameraModeChanged?.Invoke(cameraMode);
+            });
         }
 
         [ContextMenu("Change Camera Mode to Orbital")]

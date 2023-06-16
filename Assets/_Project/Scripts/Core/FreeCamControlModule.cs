@@ -4,18 +4,23 @@ namespace gishadev.Shooter.Core
 {
     public class FreeCamControlModule : ICameraControlModule
     {
+        public bool IsInitialized { get; private set; }
+
         private readonly Transform _transform;
         private readonly Transform _offsetRig;
         private readonly GameDataSO _gameDataSo;
 
-        private float _xRot, _yRot;
-        private float _hInput, _vInput;
+        private float _xRot;
+
+        private readonly Camera _cam;
 
         public FreeCamControlModule(Transform transform, Transform offsetRig, GameDataSO gameDataSO)
         {
             _transform = transform;
             _offsetRig = offsetRig;
             _gameDataSo = gameDataSO;
+
+            _cam = Camera.main;
         }
 
         public void Tick()
@@ -27,23 +32,28 @@ namespace gishadev.Shooter.Core
         public void OnStart()
         {
             Cursor.lockState = CursorLockMode.Locked;
-
-            _xRot = Camera.main.transform.localRotation.eulerAngles.x;
-            _transform.localPosition = Camera.main.transform.localPosition;
-            _offsetRig.localPosition = Vector3.zero;
-            Camera.main.transform.localPosition = Vector3.zero;
+            _xRot = _cam.transform.localRotation.eulerAngles.x;
         }
 
         public void OnStop()
         {
         }
 
+        public void Init()
+        {
+            _transform.localPosition = _cam.transform.localPosition;
+            _offsetRig.localPosition = Vector3.zero;
+            _cam.transform.localPosition = Vector3.zero;
+
+            IsInitialized = true;
+        }
+
         private void HandleMovement()
         {
-            _hInput = Input.GetAxis("Horizontal");
-            _vInput = Input.GetAxis("Vertical");
+            var hInput = Input.GetAxis("Horizontal");
+            var vInput = Input.GetAxis("Vertical");
 
-            var moveInput = Camera.main.transform.forward * _vInput + Camera.main.transform.right * _hInput;
+            var moveInput = _cam.transform.forward * vInput + _cam.transform.right * hInput;
             _transform.Translate(moveInput * (_gameDataSo.FreeCamMoveSpeed * Time.deltaTime), Space.World);
         }
 
@@ -55,9 +65,10 @@ namespace gishadev.Shooter.Core
             _xRot -= mouseY;
             _xRot = Mathf.Clamp(_xRot, -90f, 90f);
 
-            Camera.main.transform.localRotation = Quaternion.Euler(_xRot, 0f, 0f);
-            _yRot = mouseX;
-            _transform.transform.Rotate(Vector3.up * _yRot);
+            _cam.transform.localRotation = Quaternion.Euler(_xRot, 0f, 0f);
+
+            var yRot = mouseX;
+            _transform.transform.Rotate(Vector3.up * yRot);
         }
     }
 }
