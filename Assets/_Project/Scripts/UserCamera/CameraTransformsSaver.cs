@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace gishadev.Shooter.Camera
+namespace gishadev.Shooter.UserCamera
 {
     public class CameraTransformsSaver
     {

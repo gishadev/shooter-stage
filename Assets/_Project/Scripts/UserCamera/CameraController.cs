@@ -1,9 +1,10 @@
 using System;
 using DG.Tweening;
 using gishadev.Shooter.Core;
+using gishadev.Shooter.UserCamera.Modules;
 using UnityEngine;
 
-namespace gishadev.Shooter.Camera
+namespace gishadev.Shooter.UserCamera
 {
     public class CameraController : MonoBehaviour
     {
