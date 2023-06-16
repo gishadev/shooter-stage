@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace gishadev.Shooter.Core
+namespace gishadev.Shooter.Game.Core
 {
     [CreateAssetMenu(fileName = "GameData", menuName = "ScriptableObjects/GameData", order = 0)]
     public class GameDataSO : ScriptableObject

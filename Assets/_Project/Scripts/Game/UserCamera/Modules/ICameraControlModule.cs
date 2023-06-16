@@ -1,4 +1,4 @@
-﻿namespace gishadev.Shooter.UserCamera.Modules
+﻿namespace gishadev.Shooter.Game.UserCamera.Modules
 {
     public interface ICameraControlModule
     {

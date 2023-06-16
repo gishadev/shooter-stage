@@ -1,7 +1,7 @@
-﻿using gishadev.Shooter.Core;
+﻿using gishadev.Shooter.Game.Core;
 using UnityEngine;
 
-namespace gishadev.Shooter.UserCamera.Modules
+namespace gishadev.Shooter.Game.UserCamera.Modules
 {
     public class OrbitalControlModule : ICameraControlModule
     {

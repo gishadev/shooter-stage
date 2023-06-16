@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace gishadev.Shooter.Stage
+namespace gishadev.Shooter.Game.Stage
 {
     [RequireComponent(typeof(LineRenderer))]
     public class ArrowAnimation : MonoBehaviour

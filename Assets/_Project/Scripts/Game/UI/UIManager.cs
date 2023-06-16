@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using gishadev.Shooter.UserCamera;
+using gishadev.Shooter.Game.UserCamera;
 using TMPro;
 using UnityEngine;
 
-namespace gishadev.Shooter.UI
+namespace gishadev.Shooter.Game.UI
 {
     public class UIManager : MonoBehaviour
     {
